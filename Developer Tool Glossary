@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Tool Glossary</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'hf-orange': '#FF8C00', /* Hacktoberfest orange */
+                        'hf-dark': '#1e293b',  /* Slate dark background */
+                    }
+                },
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* Slate 100 */
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6 sm:p-10 bg-slate-50">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-hf-dark mb-2 tracking-tight">
+                📚 Developer Tool Glossary
+            </h1>
+            <p class="text-lg text-gray-600">
+                A simple reference for common development terms and tools.
+            </p>
+        </header>
+
+        <!-- Contribution Guidance -->
+        <div class="bg-hf-orange/10 border-l-4 border-hf-orange p-4 rounded-lg mb-8 shadow-inner">
+            <p class="text-gray-700 font-medium">
+                ✨ **Hacktoberfest Contribution Point:** Add a new term object to the `glossaryTerms` array in the JavaScript section below!
+            </p>
+        </div>
+        
+        <!-- Search and Filter -->
+        <div class="mb-8 p-4 bg-white rounded-xl shadow-lg border border-gray-100">
+            <input type="text" id="search-input" placeholder="Search terms (e.g., 'API', 'Git')" class="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-hf-orange focus:border-hf-orange">
+        </div>
+
+        <!-- Glossary Display -->
+        <div id="glossary-list" class="space-y-4">
+            <!-- Terms will be rendered here by JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-10 text-gray-500">
+            No terms matched your search. Try a different keyword!
+        </div>
+    </div>
+
+
+    <script>
+        // --- HACKTOBERFEST CONTRIBUTION POINT: ADD NEW TERMS HERE ---
+        const glossaryTerms = [
+            { term: "API", category: "General", definition: "Application Programming Interface. A set of rules defining how software components should interact.", keywords: "interface, external, request, response" },
+            { term: "Git", category: "Version Control", definition: "A distributed version control system for tracking changes in source code during software development.", keywords: "version, control, repository, clone, commit" },
+            { term: "Frontend", category: "Web Development", definition: "The user-facing side of a website or application, including everything the user sees and interacts with.", keywords: "client-side, UI, user interface, HTML, CSS, JavaScript" },
+            { term: "Backend", category: "Web Development", definition: "The server-side of an application that handles data storage, security, and logic.", keywords: "server-side, database, logic, API" },
+            { term: "VCS", category: "Version Control", definition: "Version Control System. Software tools that help a software team manage changes to source code over time.", keywords: "git, svn, history" },
+            { term: "CRUD", category: "Databases", definition: "An acronym for Create, Read, Update, and Delete. The four basic operations of persistent storage.", keywords: "database, operations, storage" },
+            // Add your new term here! Example:
+            // { term: "Docker", category: "DevOps", definition: "A platform that uses OS-level virtualization to deliver software in packages called containers.", keywords: "container, virtualization, deployment" },
+        ];
+        // -----------------------------------------------------------
+
+        const glossaryList = document.getElementById('glossary-list');
+        const searchInput = document.getElementById('search-input');
+        const emptyState = document.getElementById('empty-state');
+
+        /**
+         * Renders the glossary list based on a filtered array of terms.
+         * @param {Array<Object>} termsToDisplay - The array of glossary terms to render.
+         */
+        function renderGlossary(termsToDisplay) {
+            glossaryList.innerHTML = '';
+
+            if (termsToDisplay.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            termsToDisplay.forEach(item => {
+                const termElement = document.createElement('div');
+                termElement.className = 'bg-white p-6 rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition duration-200';
+                
+                termElement.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-xl font-bold text-hf-dark">${item.term}</h2>
+                        <span class="inline-flex items-center rounded-full bg-hf-orange/20 px-3 py-0.5 text-xs font-medium text-hf-dark border border-hf-orange">
+                            ${item.category}
+                        </span>
+                    </div>
+                    <p class="text-gray-700">${item.definition}</p>
+                    ${item.keywords ? `<p class="mt-3 text-xs text-gray-400">Keywords: ${item.keywords}</p>` : ''}
+                `;
+                glossaryList.appendChild(termElement);
+            });
+        }
+
+        /**
+         * Filters the glossary terms based on the search input value.
+         */
+        function filterGlossary() {
+            const query = searchInput.value.toLowerCase().trim();
+
+            if (!query) {
+                renderGlossary(glossaryTerms);
+                return;
+            }
+
+            const filteredTerms = glossaryTerms.filter(item => {
+                const searchString = `${item.term} ${item.definition} ${item.category} ${item.keywords || ''}`.toLowerCase();
+                return searchString.includes(query);
+            });
+
+            renderGlossary(filteredTerms);
+        }
+
+        // Add event listener for search input
+        searchInput.addEventListener('input', filterGlossary);
+
+        // Initial rendering of the full list on load
+        window.onload = () => {
+            renderGlossary(glossaryTerms);
+        };
+    </script>
+</body>
+</html>
