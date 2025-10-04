@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Fact Contributor</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'hf-orange': '#FF8C00', /* Hacktoberfest orange */
+                        'hf-dark': '#212429', /* Dark background */
+                    }
+                },
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .fact-card {
+            background: white;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .fact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(255, 140, 0, 0.2);
+        }
+        .fact-text {
+            min-height: 100px; /* Ensure card doesn't collapse */
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 bg-hf-dark">
+
+    <div class="max-w-xl w-full">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-hf-orange mb-3">
+                🧠 Random Fun Facts
+            </h1>
+            <p class="text-lg text-gray-300">
+                Submit your favorite trivia for a quick Hacktoberfest contribution!
+            </p>
+        </header>
+
+        <!-- Fun Fact Card -->
+        <div id="fact-card" class="fact-card p-8 rounded-2xl shadow-2xl">
+            <div id="fun-fact-display" class="fact-text text-xl sm:text-2xl font-semibold text-gray-800 italic">
+                Click the button below to discover a fascinating fact!
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="mt-8 text-center">
+            <button id="new-fact-button"
+                    class="bg-hf-orange hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-hf-orange focus:ring-opacity-50">
+                Get New Fact
+            </button>
+        </div>
+
+        <!-- Contribution Guidance -->
+        <footer class="mt-16 text-center text-gray-400 text-sm max-w-sm mx-auto">
+            <p>To contribute: Simply add a new string to the `funFacts` array in the JavaScript section!</p>
+        </footer>
+    </div>
+
+
+    <script>
+        // --- HACKTOBERFEST CONTRIBUTION POINT: ADD NEW FACTS HERE ---
+        const funFacts = [
+            "A group of flamingos is called a 'flamboyance'.",
+            "Honey never spoils. Archaeologists have found edible honey in ancient Egyptian tombs.",
+            "The shortest war in history was between Britain and Zanzibar on August 27, 1896. It lasted only 38 to 45 minutes.",
+            "Octopuses have three hearts and blue blood.",
+            "The entire world’s population could fit inside Los Angeles.",
+            "A jiffy is an actual unit of time: 1/100th of a second.",
+            "There are more possible iterations of a game of chess than there are atoms in the known universe.",
+            "The total weight of all the ants on Earth is thought to be about the same as the total weight of all the humans on Earth.",
+            "It is impossible for most people to lick their own elbow.",
+            // Add your unique, amazing fact here!
+        ];
+        // -----------------------------------------------------------
+
+        const factDisplay = document.getElementById('fun-fact-display');
+        const newFactButton = document.getElementById('new-fact-button');
+        let lastFactIndex = -1;
+
+        /**
+         * Selects and displays a random fact from the array.
+         * Ensures the same fact is not repeated consecutively.
+         */
+        function displayRandomFact() {
+            if (funFacts.length === 0) {
+                factDisplay.textContent = "No facts available! Please add some to the array.";
+                return;
+            }
+
+            let randomIndex;
+            // Loop to ensure the new index is different from the last one, if possible
+            do {
+                randomIndex = Math.floor(Math.random() * funFacts.length);
+            } while (randomIndex === lastFactIndex && funFacts.length > 1);
+            
+            lastFactIndex = randomIndex;
+            factDisplay.textContent = funFacts[randomIndex];
+        }
+
+        // Event listener for the button click
+        newFactButton.addEventListener('click', displayRandomFact);
+
+        // Display the first fact when the page loads
+        window.onload = displayRandomFact;
+
+    </script>
+</body>
+</html>
